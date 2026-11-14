@@ -1,4 +1,4 @@
-const CACHE='lugat-v2';
+const CACHE='lugat-v4';
 const SHELL=['./','index.html','manifest.json','favicon.png','apple-touch-icon.png','icon-192.png','icon-512.png','icon-maskable.png','logo.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>Promise.all(SHELL.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
