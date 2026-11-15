@@ -124,7 +124,12 @@ footer{max-width:1120px;margin:0 auto;padding:6px 16px 26px;color:var(--muted);f
 footer p{margin:4px 0;text-align:center}
 .fbox{display:flex;gap:8px;align-items:flex-start;text-align:left;padding:8px 2px;border-top:1px solid var(--line);line-height:1.5}
 .fabout strong{color:var(--ink);font-weight:600}
-.fuse a{color:var(--green);text-decoration:underline;word-break:break-all}
+.rules ol,.rules li,.db p,.db li,.db h3+p,.fbox>div{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.fbox{text-align:justify}
+.db .dl,.db a.dl{text-align:center}
+.blk p,.altfull,.abbr p,.abrow,.empty,.pi p,.see h4+*{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.card h3,.card .ct,.abrow b{text-align:left}
+.fuse a{color:var(--green);text-decoration:underline;display:inline-block;overflow-wrap:anywhere}
 .fwarn strong{color:var(--red);font-weight:700}
 .fwarn .ficon{color:var(--red)}
 .ficon{flex:none;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:.62rem;border:1px solid currentColor;border-radius:50%;margin-top:2px;color:var(--muted)}
@@ -136,7 +141,13 @@ footer p{margin:4px 0;text-align:center}
 .menu svg{width:18px;height:18px;color:var(--green)}
 .tools{position:relative}
 .rules{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;display:none}
-.rules h2{margin:0 0 8px;font-size:1.05rem;color:var(--green)}
+.rhead{display:flex;align-items:center;gap:10px;width:100%;background:transparent;border:0;padding:2px 0;font-size:1.05rem;font-weight:700;color:var(--green);text-align:left;min-height:40px;cursor:pointer}
+.rhead span{flex:1}
+.rhead .ri{width:22px;height:22px;flex:none}
+.rhead .chev{width:20px;height:20px;flex:none;transition:transform .2s}
+.rhead[aria-expanded=true] .chev{transform:rotate(180deg)}
+.rules ol{margin-top:8px}
+.rules ol[hidden]{display:none}
 .rules ol{margin:0;padding-left:20px;line-height:1.55}.rules li{margin:6px 0}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(30px);background:#17261d;color:#fff;border-radius:999px;padding:10px 20px;opacity:0;pointer-events:none;transition:.25s;z-index:99;font-size:.95rem;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%)}
@@ -271,10 +282,10 @@ dialog::backdrop{background:rgba(10,25,15,.55)}
       <div class="fgroup"><h3>Ҳарф бўйича</h3><div class="chips letters" id="fletters"></div></div>
     </aside>
     <section aria-live="polite">
-      <div id="rules" class="rules"><h2>Қандай фойдаланилади</h2><ol>
-        <li><strong>Қидириш майдони.</strong> Атама, касаллик ёки восита номини ёзинг. МКБ-10 кодини (мас., E11) ёзиш ҳам мумкин. Сўзнинг бошини ёзсангиз ҳам топилади; лотин ҳарфлари ва «к/қ, г/ғ, х/ҳ, у/ў» фарқи аҳамиятсиз.</li>
-        <li><strong>Микрофон.</strong> Микрофон тугмаси орқали номни овоз билан айтиб ҳам қидириш мумкин.</li>
-        <li><strong>Фильтр тугмаси.</strong> Керакли бўлимни танлаб, қидиринг. Бўлим танланганда ҳарфлар чиқади.</li>
+      <div id="rules" class="rules"><button type="button" id="rulesBtn" class="rhead" aria-expanded="false" aria-controls="rulesBody"><svg class="ri" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>Қандай фойдаланилади?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><ol id="rulesBody" hidden>
+        <li><strong>Қидириш майдони.</strong> Атама, касаллик ёки восита номини ёзинг. МКБ-10 кодини (мас., E11) ёзиш ҳам мумкин. Сўзнинг бошини ёзсангиз ҳам топилади.</li>
+        <li><strong>Микрофон.</strong> Микрофон тугмаси орқали овоз билан айтиб ҳам қидириш мумкин.</li>
+        <li><strong>Фильтр тугмаси.</strong> Керакли бўлимни танлаб, қидиринг.</li>
       </ol></div>
       <div class="meta"><span id="count"></span><span id="reset"></span></div>
       <div id="abbrs"></div>
@@ -618,6 +629,8 @@ document.addEventListener('click',function(ev){if(!m.hidden&&!m.contains(ev.targ
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape')close()});window.addEventListener('resize',close);
 $('ver').textContent=VER;
 })();
+$('rulesBtn').addEventListener('click',function(){var o=this.getAttribute('aria-expanded')==='true';this.setAttribute('aria-expanded',o?'false':'true');$('rulesBody').hidden=o});
+
 
 (function(){var q=$('q'),mq=window.matchMedia('(max-width:560px)'),mq2=window.matchMedia('(max-width:430px)');
 function ph(){q.placeholder=mq2.matches?'Атама, касаллик, МКБ-10':mq.matches?'Атама, касаллик, восита ёки МКБ-10':'Атама, касаллик, восита номи ёки МКБ-10 коди'}
